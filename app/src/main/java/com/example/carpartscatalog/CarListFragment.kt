@@ -39,7 +39,7 @@ class CarListFragment : Fragment() {
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
-                Toast.makeText(requireContext(), "Ошибка загрузки брендов", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Error loading brands", Toast.LENGTH_SHORT).show()
             }
         }
 

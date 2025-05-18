@@ -42,7 +42,7 @@ class CarModelsActivity : AppCompatActivity() {
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
-                Toast.makeText(this@CarModelsActivity, "Ошибка загрузки моделей", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@CarModelsActivity, "Error loading models", Toast.LENGTH_SHORT).show()
             }
         }
     }

@@ -47,7 +47,7 @@ class PartDetailActivity : AppCompatActivity() {
 
         addToCartButton.setOnClickListener {
             CartManager.addToCart(part)
-            Toast.makeText(this, "Добавлено в корзину: $partName", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Added to cart: $partName", Toast.LENGTH_SHORT).show()
         }
     }
 }

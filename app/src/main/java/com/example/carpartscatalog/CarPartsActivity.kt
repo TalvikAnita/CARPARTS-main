@@ -54,7 +54,7 @@ class CarPartsActivity : AppCompatActivity() {
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "Error loading parts: ${e.message}", e)
-                Toast.makeText(this@CarPartsActivity, "Ошибка загрузки запчастей: ${e.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@CarPartsActivity, "Error loading parts: ${e.message}", Toast.LENGTH_LONG).show()
             }
         }
     }
