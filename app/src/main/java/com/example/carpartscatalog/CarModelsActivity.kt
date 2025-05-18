@@ -9,8 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import android.util.Log
-
+import android.widget.Toast
 
 class CarModelsActivity : AppCompatActivity() {
 
@@ -18,40 +17,33 @@ class CarModelsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_car_models)
 
-        // Получаем переданное имя автомобиля
         val carName = intent.getStringExtra("CAR_NAME") ?: "Unknown Car"
-        val carid = intent.getIntExtra("CAR_ID", 1)+1
-        // Устанавливаем название марки
+        val carId = intent.getIntExtra("CAR_ID", 1)
+
         val textView: TextView = findViewById(R.id.car_name_text_view)
         textView.text = "$carName Models"
 
         val listView: ListView = findViewById(R.id.model_list_view)
 
-        // 🚀 Запуск корутины
         lifecycleScope.launch {
             try {
-                // ⚙️ Получаем список моделей в фоне
                 val modelList = withContext(Dispatchers.IO) {
-                    Log.d("", "жопа ${carid}")
-
-                    NetworkUtils.getmodels(carid)
+                    NetworkUtils.getModels(carId)
                 }
 
-                // ✅ Обновляем UI в главном потоке
                 val adapter = ModelAdapter(this@CarModelsActivity, modelList)
                 listView.adapter = adapter
 
                 listView.setOnItemClickListener { _, _, position, _ ->
                     val intent = Intent(this@CarModelsActivity, CarPartsActivity::class.java)
                     intent.putExtra("MODEL_NAME", modelList[position].name)
+                    intent.putExtra("MODEL_ID", modelList[position].id)
                     startActivity(intent)
                 }
-
             } catch (e: Exception) {
                 e.printStackTrace()
-                // Здесь можно показать сообщение об ошибке
+                Toast.makeText(this@CarModelsActivity, "Ошибка загрузки моделей", Toast.LENGTH_SHORT).show()
             }
         }
     }
 }
-data class CarModel(val name: String, val imageResId: Int)
