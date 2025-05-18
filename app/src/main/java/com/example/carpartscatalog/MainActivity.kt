@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.nav_car_list -> replaceFragment(CarListFragment()) // Нажатие на "Car List"
                 R.id.nav_contact_info -> replaceFragment(ContactInfoFragment()) // Нажатие на "Contact Info"
+                R.id.nav_cart -> replaceFragment(CartFragment()) // Нажатие на "Cart"
             }
             true
         }

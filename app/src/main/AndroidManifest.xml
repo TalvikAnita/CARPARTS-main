@@ -36,6 +36,10 @@
         <activity
             android:name=".CarPartsActivity"
             android:exported="false" />
+        <activity
+            android:name=".PartDetailActivity"
+            android:exported="false" />
+
 
     </application>
 

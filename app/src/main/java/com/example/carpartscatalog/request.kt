@@ -48,8 +48,7 @@ object NetworkUtils {
                 val item = jsonArray.getJSONObject(i)
                 val id = item.getInt("M_id")
                 val name = item.getString("M_name")
-                val logoUrl = item.getString("M_logo")
-                modelList.add(CarModel(id, name, logoUrl))
+                modelList.add(CarModel(id, name)) // Исправлено: добавляем объект в список
             }
         }
         return modelList
@@ -72,7 +71,9 @@ object NetworkUtils {
                 val id = item.getInt("P_id")
                 val name = item.getString("P_name")
                 val logoUrl = item.getString("P_logo")
-                partsList.add(Part(id, name, logoUrl))
+                val description = item.getString("P_description")
+                val price = item.getDouble("P_price")
+                partsList.add(Part(id, name, logoUrl, description, price))
             }
         }
         return partsList

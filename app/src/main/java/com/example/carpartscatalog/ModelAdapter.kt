@@ -21,19 +21,10 @@ class ModelAdapter(private val context: Context, private val models: List<CarMod
         val view = convertView ?: LayoutInflater.from(context).inflate(R.layout.list_item_model, parent, false)
         val model = models[position]
 
-        val imageView: ImageView = view.findViewById(R.id.model_image)
         val textView: TextView = view.findViewById(R.id.model_name)
 
         textView.text = model.name
-        if (model.logoUrl.isNotEmpty()) {
-            Glide.with(context)
-                .load(model.logoUrl)
-                .placeholder(R.drawable.placeholder)
-                .error(R.drawable.placeholder)
-                .into(imageView)
-        } else {
-            imageView.setImageResource(R.drawable.placeholder)
-        }
+
 
         return view
     }
