@@ -2,10 +2,15 @@ package com.example.carpartscatalog
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.AdapterView
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import android.util.Log
+
 
 class CarModelsActivity : AppCompatActivity() {
 
@@ -15,44 +20,38 @@ class CarModelsActivity : AppCompatActivity() {
 
         // Получаем переданное имя автомобиля
         val carName = intent.getStringExtra("CAR_NAME") ?: "Unknown Car"
-
+        val carid = intent.getIntExtra("CAR_ID", 1)+1
         // Устанавливаем название марки
         val textView: TextView = findViewById(R.id.car_name_text_view)
         textView.text = "$carName Models"
 
-        // Список моделей для выбранного авто
-        val modelList = when (carName) {
-            "Skoda" -> listOf(
-                CarModel("Octavia", R.drawable.skoda_octavia),
-                CarModel("Superb", R.drawable.skoda_superb),
-                CarModel("Kodiaq", R.drawable.skoda_kodiaq)
-            )
-            "BMW" -> listOf(
-                CarModel("3 Series", R.drawable.bmw_3series),
-                CarModel("X5", R.drawable.bmw_x5),
-                CarModel("M5", R.drawable.bmw_m5)
-            )
-            "Audi" -> listOf(
-                CarModel("A4", R.drawable.audi_a4),
-                CarModel("Q7", R.drawable.audi_q7),
-                CarModel("TT", R.drawable.audi_tt)
-            )
-            else -> emptyList()
-        }
-
-        // Подключаем адаптер для списка
         val listView: ListView = findViewById(R.id.model_list_view)
-        val adapter = ModelAdapter(this, modelList)
-        listView.adapter = adapter
 
-        // При клике на модель — переход на список запчастей
-        listView.setOnItemClickListener { parent, view, position, id ->
-            val intent = Intent(this, CarPartsActivity::class.java)
-            intent.putExtra("MODEL_NAME", modelList[position].name)
-            startActivity(intent)
+        // 🚀 Запуск корутины
+        lifecycleScope.launch {
+            try {
+                // ⚙️ Получаем список моделей в фоне
+                val modelList = withContext(Dispatchers.IO) {
+                    Log.d("", "жопа ${carid}")
+
+                    NetworkUtils.getmodels(carid)
+                }
+
+                // ✅ Обновляем UI в главном потоке
+                val adapter = ModelAdapter(this@CarModelsActivity, modelList)
+                listView.adapter = adapter
+
+                listView.setOnItemClickListener { _, _, position, _ ->
+                    val intent = Intent(this@CarModelsActivity, CarPartsActivity::class.java)
+                    intent.putExtra("MODEL_NAME", modelList[position].name)
+                    startActivity(intent)
+                }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                // Здесь можно показать сообщение об ошибке
+            }
         }
     }
 }
-
-// Класс модели авто
 data class CarModel(val name: String, val imageResId: Int)

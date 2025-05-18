@@ -33,6 +33,7 @@ class CarListFragment : Fragment() {
         listView.setOnItemClickListener { parent, view, position, id ->
             val intent = Intent(requireContext(), CarModelsActivity::class.java)
             intent.putExtra("CAR_NAME", carList[position].name)
+            intent.putExtra("CAR_ID", position)
             startActivity(intent)
         }
 
