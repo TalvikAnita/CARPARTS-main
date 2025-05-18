@@ -12,14 +12,14 @@ class MainActivity : AppCompatActivity() {
 
         val bottomNavigation: BottomNavigationView = findViewById(R.id.bottom_navigation)
 
-        // Показываем CarListFragment при старте
+
         replaceFragment(CarListFragment())
 
         bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.nav_car_list -> replaceFragment(CarListFragment()) // Нажатие на "Car List"
-                R.id.nav_contact_info -> replaceFragment(ContactInfoFragment()) // Нажатие на "Contact Info"
-                R.id.nav_cart -> replaceFragment(CartFragment()) // Нажатие на "Cart"
+                R.id.nav_car_list -> replaceFragment(CarListFragment())
+                R.id.nav_contact_info -> replaceFragment(ContactInfoFragment())
+                R.id.nav_cart -> replaceFragment(CartFragment())
             }
             true
         }

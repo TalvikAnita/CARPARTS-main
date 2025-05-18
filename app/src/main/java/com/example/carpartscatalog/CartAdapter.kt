@@ -5,9 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.Button // Импортируем Button
 import android.widget.TextView
 
-class CartAdapter(private val context: Context, private val cartItems: List<Part>) : BaseAdapter() {
+class CartAdapter(
+    private val context: Context,
+    private val cartItems: MutableList<Part>,
+    private val onRemoveItem: (Int) -> Unit
+) : BaseAdapter() {
 
     override fun getCount(): Int = cartItems.size
 
@@ -21,9 +26,14 @@ class CartAdapter(private val context: Context, private val cartItems: List<Part
 
         val nameTextView: TextView = view.findViewById(R.id.cart_item_name)
         val priceTextView: TextView = view.findViewById(R.id.cart_item_price)
+        val removeButton: Button = view.findViewById(R.id.remove_button)
 
         nameTextView.text = part.name
         priceTextView.text = "Price: $%.2f".format(part.price)
+
+        removeButton.setOnClickListener {
+            onRemoveItem(part.id)
+        }
 
         return view
     }

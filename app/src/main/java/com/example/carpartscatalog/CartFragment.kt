@@ -10,17 +10,22 @@ import androidx.fragment.app.Fragment
 
 class CartFragment : Fragment() {
 
+    private lateinit var cartListView: ListView
+    private lateinit var emptyCartTextView: TextView
+    private lateinit var adapter: CartAdapter
+    private lateinit var cartItems: MutableList<Part> // Список для обновления
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_cart, container, false)
 
-        val cartListView: ListView = view.findViewById(R.id.cart_list_view)
-        val emptyCartTextView: TextView = view.findViewById(R.id.empty_cart_text)
+        cartListView = view.findViewById(R.id.cart_list_view)
+        emptyCartTextView = view.findViewById(R.id.empty_cart_text)
 
-        // Получаем список запчастей в корзине
-        val cartItems = CartManager.getCartItems()
+
+        cartItems = CartManager.getCartItems().toMutableList()
 
         if (cartItems.isEmpty()) {
             emptyCartTextView.visibility = View.VISIBLE
@@ -28,7 +33,20 @@ class CartFragment : Fragment() {
         } else {
             emptyCartTextView.visibility = View.GONE
             cartListView.visibility = View.VISIBLE
-            val adapter = CartAdapter(requireContext(), cartItems)
+            adapter = CartAdapter(requireContext(), cartItems) { partId ->
+
+                CartManager.removeFromCart(partId)
+                cartItems.clear()
+                cartItems.addAll(CartManager.getCartItems())
+                if (cartItems.isEmpty()) {
+                    emptyCartTextView.visibility = View.VISIBLE
+                    cartListView.visibility = View.GONE
+                } else {
+                    emptyCartTextView.visibility = View.GONE
+                    cartListView.visibility = View.VISIBLE
+                }
+                adapter.notifyDataSetChanged()
+            }
             cartListView.adapter = adapter
         }
 

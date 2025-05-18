@@ -8,12 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 class StartActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_start) // Указываем, какую разметку использовать
+        setContentView(R.layout.activity_start)
 
-        val startButton: Button = findViewById(R.id.start_button) // Ищем кнопку по её ID
+        val startButton: Button = findViewById(R.id.start_button)
         startButton.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java) // Переход на главный экран
-            startActivity(intent) // Запуск MainActivity
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
         }
     }
 }

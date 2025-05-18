@@ -14,4 +14,9 @@ object CartManager {
     fun clearCart() {
         cartItems.clear()
     }
+
+    fun removeFromCart(partId: Int) {
+        cartItems.removeAll { it.id == partId }
+    }
+
 }

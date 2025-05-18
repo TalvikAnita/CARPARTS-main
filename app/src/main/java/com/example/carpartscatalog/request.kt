@@ -9,7 +9,7 @@ object NetworkUtils {
 
     private val client = OkHttpClient()
 
-    // Получение списка брендов
+
     fun getBrands(): List<Brand> {
         val request = Request.Builder()
             .url("http://10.0.2.2:80/api/get_brands.php")
@@ -32,7 +32,7 @@ object NetworkUtils {
         return brandList
     }
 
-    // Получение списка моделей
+
     fun getModels(brandId: Int): List<CarModel> {
         val request = Request.Builder()
             .url("http://10.0.2.2:80/api/get_models.php?B_id=$brandId")
@@ -48,13 +48,13 @@ object NetworkUtils {
                 val item = jsonArray.getJSONObject(i)
                 val id = item.getInt("M_id")
                 val name = item.getString("M_name")
-                modelList.add(CarModel(id, name)) // Исправлено: добавляем объект в список
+                modelList.add(CarModel(id, name))
             }
         }
         return modelList
     }
 
-    // Получение списка запчастей
+
     fun getParts(modelId: Int): List<Part> {
         val request = Request.Builder()
             .url("http://10.0.2.2:80/api/get_parts.php?M_id=$modelId")
